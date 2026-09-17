@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#123B7A" />
+<meta name="description" content="Vote no seu projeto favorito do MackLab 2026 — 9º Ano do Colégio MackGenius." />
+<title>MackLab 2026 — Votação 9º Ano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --color-white: #ffffff;
+    --color-red: #d71920;
+    --color-red-dark: #b7141a;
+    --color-blue: #123b7a;
+    --color-text: #1a1f2b;
+    --color-text-muted: #5b6472;
+    --color-border: #e4e7ec;
+    --color-bg: #f7f8fa;
+    --color-error: #d71920;
+    --shadow-card: 0 20px 45px -20px rgba(18, 59, 122, 0.18);
+    --radius-card: 22px;
+    --radius-input: 14px;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body { margin: 0; padding: 0; overflow-x: hidden; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-bg);
+    color: var(--color-text);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100dvh;
+  }
+
+  button { font-family: inherit; }
+
+  input:focus-visible, button:focus-visible {
+    outline: 3px solid var(--color-blue);
+    outline-offset: 2px;
+  }
+
+  /* Layout */
+  .page {
+    position: relative;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 20px 32px;
+    overflow: hidden;
+  }
+
+  .page__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .page__bg span { position: absolute; border-radius: 50%; opacity: 0.08; }
+  .page__bg .shape-1 { width: 260px; height: 260px; background: var(--color-blue); top: -80px; left: -90px; }
+  .page__bg .shape-2 { width: 220px; height: 220px; background: var(--color-red); bottom: -60px; right: -80px; }
+  .page__bg .shape-3 {
+    width: 140px; height: 140px; border-radius: 24px; background: var(--color-blue);
+    top: 45%; right: -50px; transform: rotate(20deg); opacity: 0.05;
+  }
+
+  .page__content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 440px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+  }
+
+  .header {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 8px 0 20px; width: 100%;
+  }
+
+  .header__badge {
+    width: 34px; height: 34px; border-radius: 10px; background: var(--color-blue);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--color-white); font-weight: 800; font-size: 14px; flex-shrink: 0;
+  }
+
+  .header__school { font-size: 13px; font-weight: 600; color: var(--color-text-muted); letter-spacing: 0.02em; }
+
+  .hero { text-align: center; margin-bottom: 24px; }
+
+  .hero__eyebrow {
+    display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--color-red); background: rgba(215, 25, 32, 0.08);
+    padding: 6px 12px; border-radius: 999px; margin-bottom: 14px;
+  }
+
+  .hero__title { font-size: clamp(28px, 7vw, 36px); font-weight: 800; color: var(--color-blue); margin: 0 0 6px; letter-spacing: -0.01em; }
+  .hero__subtitle { font-size: 15px; font-weight: 600; color: var(--color-text-muted); margin: 0 0 12px; }
+  .hero__text { font-size: 15px; color: var(--color-text-muted); margin: 0; line-height: 1.5; }
+
+  .footer {
+    margin-top: auto; padding-top: 28px; text-align: center;
+    font-size: 12px; color: var(--color-text-muted); line-height: 1.6;
+  }
+  .footer strong { color: var(--color-text); font-weight: 600; }
+
+  /* Card / formulário */
+  .card {
+    width: 100%; background: var(--color-white); border: 1px solid var(--color-border);
+    border-radius: var(--radius-card); box-shadow: var(--shadow-card); padding: 28px 22px;
+  }
+
+  .field { margin-bottom: 18px; }
+  .field:last-of-type { margin-bottom: 0; }
+  .field__label { display: block; font-size: 13px; font-weight: 600; color: var(--color-text); margin-bottom: 8px; }
+
+  .field__input {
+    width: 100%; height: 52px; padding: 0 16px; font-size: 16px; font-family: inherit;
+    color: var(--color-text); background: var(--color-white);
+    border: 1.5px solid var(--color-border); border-radius: var(--radius-input);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .field__input::placeholder { color: #a6adb8; }
+  .field__input:hover { border-color: #c7ccd4; }
+  .field__input:focus {
+    outline: none; border-color: var(--color-blue); box-shadow: 0 0 0 4px rgba(18, 59, 122, 0.1);
+  }
+  .field__input[aria-invalid='true'] { border-color: var(--color-error); }
+  .field__input[aria-invalid='true']:focus { box-shadow: 0 0 0 4px rgba(215, 25, 32, 0.1); }
+
+  .field__error { margin-top: 6px; font-size: 13px; color: var(--color-error); font-weight: 500; display: none; }
+  .field__error.is-visible { display: block; }
+
+  .form-error {
+    margin: 0 0 18px; padding: 12px 14px; border-radius: 12px;
+    background: rgba(215, 25, 32, 0.08); color: var(--color-red-dark);
+    font-size: 14px; font-weight: 500; line-height: 1.4; display: none;
+  }
+  .form-error.is-visible { display: block; }
+
+  .submit-btn {
+    width: 100%; height: 54px; margin-top: 6px; border: none; border-radius: var(--radius-input);
+    background: var(--color-red); color: var(--color-white); font-size: 16px; font-weight: 700;
+    letter-spacing: 0.02em; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    gap: 10px; transition: background-color 0.15s ease, transform 0.08s ease, box-shadow 0.15s ease;
+    box-shadow: 0 10px 24px -8px rgba(215, 25, 32, 0.45);
+  }
+  .submit-btn:hover:not(:disabled) { background: var(--color-red-dark); }
+  .submit-btn:active:not(:disabled) { transform: scale(0.98); }
+  .submit-btn:disabled { opacity: 0.75; cursor: not-allowed; }
+
+  .spinner {
+    width: 18px; height: 18px; border-radius: 50%; border: 2.5px solid rgba(255, 255, 255, 0.4);
+    border-top-color: var(--color-white); animation: spin 0.7s linear infinite; flex-shrink: 0; display: none;
+  }
+  .spinner.is-visible { display: block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .hint { margin-top: 14px; text-align: center; font-size: 12px; color: var(--color-text-muted); }
+
+  /* Sucesso */
+  .success-card {
+    width: 100%; background: var(--color-white); border: 1px solid var(--color-border);
+    border-radius: var(--radius-card); box-shadow: var(--shadow-card); padding: 40px 24px;
+    display: none; flex-direction: column; align-items: center; text-align: center;
+    animation: card-in 0.4s ease;
+  }
+  .success-card.is-visible { display: flex; }
+  @keyframes card-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .success-check {
+    width: 64px; height: 64px; border-radius: 50%; background: rgba(18, 59, 122, 0.08);
+    display: flex; align-items: center; justify-content: center; margin-bottom: 18px;
+    animation: check-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes check-pop { from { transform: scale(0.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .success-check svg { width: 30px; height: 30px; }
+
+  .success-title { font-size: 22px; font-weight: 800; color: var(--color-blue); margin: 0 0 8px; }
+  .success-text { font-size: 15px; color: var(--color-text-muted); margin: 0 0 18px; line-height: 1.5; }
+  .success-meta { font-size: 13px; font-weight: 600; color: var(--color-text); letter-spacing: 0.02em; }
+
+  @media (min-width: 640px) {
+    .page { padding: 48px 24px; }
+    .header { padding-top: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="page__bg" aria-hidden="true">
+    <span class="shape-1"></span>
+    <span class="shape-2"></span>
+    <span class="shape-3"></span>
+  </div>
+
+  <div class="page__content">
+    <header class="header">
+      <div class="header__badge" aria-hidden="true">ML</div>
+      <span class="header__school">Colégio MackGenius</span>
+    </header>
+
+    <section class="hero">
+      <span class="hero__eyebrow">Exposição anual • 9º Ano</span>
+      <h1 class="hero__title">MackLab 2026</h1>
+      <p class="hero__subtitle">9º Ano — MackGenius</p>
+      <p class="hero__text">Participe da votação do MackLab.</p>
+    </section>
+
+    <!-- Formulário -->
+    <div class="card" id="formCard">
+      <form id="voteForm" novalidate>
+        <p class="form-error" id="formError" role="alert"></p>
+
+        <div class="field">
+          <label class="field__label" for="nome">Nome</label>
+          <input
+            id="nome"
+            name="nome"
+            type="text"
+            class="field__input"
+            placeholder="Digite seu nome"
+            autocomplete="name"
+          />
+          <p class="field__error" id="nomeError" role="alert"></p>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="telefone">Telefone</label>
+          <input
+            id="telefone"
+            name="telefone"
+            type="tel"
+            inputmode="tel"
+            class="field__input"
+            placeholder="(19) 99999-9999"
+            autocomplete="tel"
+          />
+          <p class="field__error" id="telefoneError" role="alert"></p>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn" aria-live="polite">
+          <span class="spinner" id="spinner" aria-hidden="true"></span>
+          <span id="submitLabel">VOTAR</span>
+        </button>
+
+        <p class="hint">Seu voto é rápido, simples e seguro.</p>
+      </form>
+    </div>
+
+    <!-- Sucesso -->
+    <div class="success-card" id="successCard" role="status" aria-live="polite">
+      <div class="success-check" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="12" fill="#123B7A" />
+          <path d="M7 12.5L10.5 16L17 9" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </div>
+      <h2 class="success-title">Voto registrado!</h2>
+      <p class="success-text">Obrigado por participar do MackLab 2026.</p>
+      <p class="success-meta">9º Ano • MackGenius</p>
+    </div>
+
+    <footer class="footer">
+      <strong>MackLab 2026</strong> • 9º Ano<br />
+      Colégio MackGenius
+    </footer>
+  </div>
+</div>
+
+<!-- Cliente Supabase (UMD) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+
+<script>
+(function () {
+  // ==========================================================
+  // CONFIGURAÇÃO — preencha com as credenciais do seu projeto Supabase
+  // Painel Supabase > Project Settings > API
+  // Use APENAS a chave "anon / public". NUNCA a "service_role".
+  // ==========================================================
+  var SUPABASE_URL = 'https://pvbyateespnwltldtlyv.supabase.co';
+  var SUPABASE_ANON_KEY = 'sb_publishable_VX9J7HdkE0P9ToTENWSokg_wRAqP5kP';
+
+  var supabaseClient = null;
+  if (window.supabase && SUPABASE_URL.indexOf('COLE_AQUI') === -1) {
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  }
+
+  var GENERIC_ERROR_MESSAGE = 'Não foi possível registrar seu voto. Tente novamente.';
+
+  // ---------- Máscara de telefone ----------
+  function maskPhoneBR(rawValue) {
+    var digits = rawValue.replace(/\D/g, '').slice(0, 11);
+    if (digits.length === 0) return '';
+    if (digits.length <= 2) return '(' + digits;
+    if (digits.length <= 6) return '(' + digits.slice(0, 2) + ') ' + digits.slice(2);
+    if (digits.length <= 10) {
+      return '(' + digits.slice(0, 2) + ') ' + digits.slice(2, 6) + '-' + digits.slice(6);
+    }
+    return '(' + digits.slice(0, 2) + ') ' + digits.slice(2, 7) + '-' + digits.slice(7);
+  }
+
+  function countPhoneDigits(maskedValue) {
+    return maskedValue.replace(/\D/g, '').length;
+  }
+
+  // ---------- Validação ----------
+  function validateForm(nome, telefone) {
+    var errors = {};
+    var nomeLimpo = nome.trim().replace(/\s+/g, ' ');
+
+    if (nomeLimpo.length === 0) {
+      errors.nome = 'Digite seu nome.';
+    } else if (nomeLimpo.length < 2) {
+      errors.nome = 'Digite um nome válido.';
+    }
+
+    var digitos = countPhoneDigits(telefone);
+    if (digitos === 0) {
+      errors.telefone = 'Digite seu telefone.';
+    } else if (digitos < 10 || digitos > 11) {
+      errors.telefone = 'Digite um telefone válido.';
+    }
+
+    return errors;
+  }
+
+  // ---------- Elementos ----------
+  var form = document.getElementById('voteForm');
+  var nomeInput = document.getElementById('nome');
+  var telefoneInput = document.getElementById('telefone');
+  var nomeError = document.getElementById('nomeError');
+  var telefoneError = document.getElementById('telefoneError');
+  var formError = document.getElementById('formError');
+  var submitBtn = document.getElementById('submitBtn');
+  var submitLabel = document.getElementById('submitLabel');
+  var spinner = document.getElementById('spinner');
+  var formCard = document.getElementById('formCard');
+  var successCard = document.getElementById('successCard');
+
+  var isSubmitting = false;
+
+  telefoneInput.addEventListener('input', function (e) {
+    e.target.value = maskPhoneBR(e.target.value);
+  });
+
+  function clearErrors() {
+    nomeError.textContent = '';
+    nomeError.classList.remove('is-visible');
+    telefoneError.textContent = '';
+    telefoneError.classList.remove('is-visible');
+    formError.textContent = '';
+    formError.classList.remove('is-visible');
+    nomeInput.removeAttribute('aria-invalid');
+    telefoneInput.removeAttribute('aria-invalid');
+  }
+
+  function showFieldErrors(errors) {
+    if (errors.nome) {
+      nomeError.textContent = errors.nome;
+      nomeError.classList.add('is-visible');
+      nomeInput.setAttribute('aria-invalid', 'true');
+    }
+    if (errors.telefone) {
+      telefoneError.textContent = errors.telefone;
+      telefoneError.classList.add('is-visible');
+      telefoneInput.setAttribute('aria-invalid', 'true');
+    }
+  }
+
+  function setLoading(loading) {
+    isSubmitting = loading;
+    submitBtn.disabled = loading;
+    nomeInput.disabled = loading;
+    telefoneInput.disabled = loading;
+    spinner.classList.toggle('is-visible', loading);
+    submitLabel.textContent = loading ? 'REGISTRANDO VOTO...' : 'VOTAR';
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (isSubmitting) return; // impede múltiplos submits simultâneos
+
+    clearErrors();
+
+    var nome = nomeInput.value;
+    var telefone = telefoneInput.value;
+    var errors = validateForm(nome, telefone);
+
+    if (Object.keys(errors).length > 0) {
+      showFieldErrors(errors);
+      return;
+    }
+
+    if (!supabaseClient) {
+      formError.textContent = 'Configuração do Supabase ausente. Preencha SUPABASE_URL e SUPABASE_ANON_KEY no código.';
+      formError.classList.add('is-visible');
+      return;
+    }
+
+    setLoading(true);
+
+    var nomeLimpo = nome.trim().replace(/\s+/g, ' ');
+
+    supabaseClient
+      .from('votos')
+      .insert({ nome: nomeLimpo, telefone: telefone })
+      .then(function (result) {
+        if (result.error) {
+          throw result.error;
+        }
+        formCard.style.display = 'none';
+        successCard.classList.add('is-visible');
+      })
+      .catch(function () {
+        // Nunca exibir detalhes técnicos do erro ao visitante.
+        formError.textContent = GENERIC_ERROR_MESSAGE;
+        formError.classList.add('is-visible');
+        setLoading(false);
+      });
+  });
+})();
+</script>
+
+</body>
+</html>
